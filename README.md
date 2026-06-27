@@ -1,20 +1,22 @@
-# Screen Clicker
+﻿# Screen Clicker
 
-让 AI agent 拥有鼠标键盘。纯本地、零依赖。
+让纯文本大模型拥有鼠标键盘。
 
-## 用法
+配合 Screen OCR 使用：OCR 读屏 - 理解界面 - Clicker 操作 - OCR 验证。
+不需要多模态模型，不需要浏览器自动化框架。
 
-`powershell
-# 左键单击
+```powershell
 ScreenClicker.exe click 500 300 left
-# 输入文字
 ScreenClicker.exe type "Hello World"
-# 序列操作
 ScreenClicker.exe seq 100 200 left 300 400 double
-`
+ScreenClicker.exe drag 100 100 300 300
+ScreenClicker.exe scroll -3
+```
 
-## 配合 Screen OCR
+配套 OCR：https://github.com/REDrighthand05/screen-ocr
 
-OCR 读屏 → 得到坐标 → Clicker 点击 → OCR 验证。
+## 技术栈
+C# (.NET 8.0) | user32.dll SendInput | 零外部依赖 | Windows 10/11
 
-## 许可证 MIT
+## License
+MIT
