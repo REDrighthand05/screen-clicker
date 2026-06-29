@@ -1,22 +1,40 @@
-﻿# Screen Clicker
+# 6.29 隔离发展 — Toolchain
 
-让纯文本大模型拥有鼠标键盘。
+## 目录
 
-配合 Screen OCR 使用：OCR 读屏 - 理解界面 - Clicker 操作 - OCR 验证。
-不需要多模态模型，不需要浏览器自动化框架。
+`
+6.29隔离发展/
+├── ocr/       ScreenOcr v0.2.0 — 屏幕文字识别
+│   └── output/ScreenOcr.exe / ScreenOcrMcp.exe
+├── clicker/   ScreenClicker v0.2.0 — 鼠标/键盘模拟  
+│   └── output/ScreenClicker.exe
+└── panel/     Web 仪表盘
+    └── src/server.js — Node.js :9617
+`
 
-```powershell
-ScreenClicker.exe click 500 300 left
-ScreenClicker.exe type "Hello World"
-ScreenClicker.exe seq 100 200 left 300 400 double
-ScreenClicker.exe drag 100 100 300 300
-ScreenClicker.exe scroll -3
-```
+## 使用
 
-配套 OCR：https://github.com/REDrighthand05/screen-ocr
+`powershell
+# OCR
+ScreenOcr.exe                          # 全屏OCR
+ScreenOcr.exe --region 100,200,400,300 # 区域OCR
+ScreenOcr.exe --compact                # 纯文本
+ScreenOcr.exe --every 5000             # 每5秒扫描
+ScreenOcr.exe --mcp                    # MCP Server模式
 
-## 技术栈
-C# (.NET 8.0) | user32.dll SendInput | 零外部依赖 | Windows 10/11
+# Clicker
+ScreenClicker.exe click 500 300 left   # 点击
+ScreenClicker.exe move 100 200         # 移动  
+ScreenClicker.exe type "hello"         # 打字
+ScreenClicker.exe --seq actions.json   # 序列执行
+ScreenClicker.exe --mcp                # MCP Server模式
 
-## License
-MIT
+# Panel  
+node server.js                         # 启动Web仪表盘
+# 访问 http://127.0.0.1:9617
+`
+
+## 架构
+
+OCR 和 Clicker 都支持 MCP 协议，可以通过 stdio JSON-RPC 被 Codex 调用。
+Panel 读取工具状态和 relay 日志，展示为 Web 仪表盘。
